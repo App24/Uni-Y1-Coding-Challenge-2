@@ -17,12 +17,20 @@ namespace ChallengeWeek8
                 Instance = this;
         }
 
+        /// <summary>
+        /// Add a certain <paramref name="amount"/> of <paramref name="itemToAdd"/> to the boughtItems list
+        /// </summary>
+        /// <param name="itemToAdd">The item to add</param>
+        /// <param name="amount">The amount of <paramref name="itemToAdd"/> to add</param>
         public void AddItem(Item itemToAdd, int amount)
         {
             if (amount <= 0) return;
+
             int index = boughtItems.FindIndex(i => i.Equals(itemToAdd) && i.Amount < Item.MAX_STACK);
             Item item = null;
+
             if (index >= 0) item = boughtItems[index];
+
             if (item == null)
             {
                 item = itemToAdd.Clone();
@@ -30,7 +38,10 @@ namespace ChallengeWeek8
             }
             item.Amount += amount;
 
+            // Get the remaining amount to add to the bought items list
             amount = item.Amount - Item.MAX_STACK;
+
+            // Clamp item.Amount to Item.MAX_STACK
             if (item.Amount > Item.MAX_STACK)
             {
                 item.Amount = Item.MAX_STACK;
@@ -45,9 +56,15 @@ namespace ChallengeWeek8
             {
                 boughtItems.Add(item);
             }
+            // Call itself to add the remaining amount
             AddItem(itemToAdd, amount);
         }
 
+        /// <summary>
+        /// Remove a certain <paramref name="amount"/> of <paramref name="itemToRemove"/> from the boughtItems list
+        /// </summary>
+        /// <param name="itemToRemove">The item to add</param>
+        /// <param name="amount">The amount of <paramref name="itemToRemove"/> to remove</param>
         public void RemoveItem(Item itemToRemove, int amount)
         {
             if (amount <= 0) return;
@@ -63,6 +80,8 @@ namespace ChallengeWeek8
             {
                 boughtItems.Insert(index, item);
             }
+
+            // Call itself to remove remaining amount
             RemoveItem(itemToRemove, amount);
         }
 
@@ -81,9 +100,10 @@ namespace ChallengeWeek8
             return string.Join("\n\n", text);
         }
 
-        public List<Item> GetBoughtItems(bool ignoreStack = true)
+        public List<Item> GetBoughtItems()
         {
-            if (!ignoreStack) return boughtItems;
+            // Flatten boughtItems list into a list that has one instance of each item, instead of multiple instances of one item
+            // due to stacking
             List<Item> toReturn = new List<Item>();
 
             foreach (Item item in boughtItems)

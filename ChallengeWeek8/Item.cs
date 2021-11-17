@@ -24,6 +24,7 @@
             Value = value;
         }
 
+        // Allows for easy comparison of objects to know if these are the same
         public override bool Equals(object obj)
         {
             if (obj is Item item)
@@ -33,6 +34,10 @@
             return false;
         }
 
+        /// <summary>
+        /// Clone this instance of the object with exact same values
+        /// </summary>
+        /// <returns>A clone of this instance of item</returns>
         public Item Clone()
         {
             Item item = new Item(Name, Description, Value);
@@ -40,6 +45,12 @@
             return item;
         }
 
+        /// <summary>
+        /// Get the resale value of an item depending on <paramref name="amount"/>
+        /// </summary>
+        /// <param name="item">The item to calculate the resale price</param>
+        /// <param name="amount">The amount of <paramref name="item"/></param>
+        /// <returns>A float that is the resale price of the item</returns>
         public static float GetResalePrice(Item item, int amount)
         {
             return amount * item.Value * Shop.RESALE_FACTOR;

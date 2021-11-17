@@ -76,6 +76,11 @@ namespace ChallengeWeek8
         #endregion
 
         #region Stock Logic
+        /// <summary>
+        /// Add a certain <paramref name="amount"/> of <paramref name="itemToAdd"/> to the stockItems list
+        /// </summary>
+        /// <param name="itemToAdd">The item to add</param>
+        /// <param name="amount">The amount of <paramref name="itemToAdd"/> to add</param>
         private void AddItemToStock(Item itemToAdd, int amount)
         {
             Item item = stockItems.Find(i => i.Equals(itemToAdd));
@@ -88,6 +93,11 @@ namespace ChallengeWeek8
             stockItems.AddOrReplace(item);
         }
 
+        /// <summary>
+        /// Remove a certain <paramref name="amount"/> of <paramref name="itemToRemove"/> from the stockItems list
+        /// </summary>
+        /// <param name="itemToRemove">The item to add</param>
+        /// <param name="amount">The amount of <paramref name="itemToRemove"/> to remove</param>
         private void RemoveItemFromStock(Item itemToRemove, int amount)
         {
             Item item = stockItems.Find(i => i.Equals(itemToRemove));
@@ -105,9 +115,15 @@ namespace ChallengeWeek8
         #endregion
 
         #region Basket Logic
+        /// <summary>
+        /// Add a certain <paramref name="amount"/> of <paramref name="itemToAdd"/> to the playerBasket list
+        /// </summary>
+        /// <param name="itemToAdd">The item to add</param>
+        /// <param name="amount">The amount of <paramref name="itemToAdd"/> to add</param>
         public void AddToBasket(Item itemToAdd, int amount)
         {
             Item stockItem = stockItems.Find(i => i.Equals(itemToAdd));
+            // Check if the item is in stock
             if (stockItem == null || stockItem.Amount <= 0)
             {
                 Utils.WriteColor($"[{ColorConstants.BAD_COLOR}]That item is not in stock!");
@@ -128,6 +144,11 @@ namespace ChallengeWeek8
             playerBasket.AddOrReplace(item);
         }
 
+        /// <summary>
+        /// Remove a certain <paramref name="amount"/> of <paramref name="itemToRemove"/> from the playerBasket list
+        /// </summary>
+        /// <param name="itemToRemove">The item to add</param>
+        /// <param name="amount">The amount of <paramref name="itemToRemove"/> to remove</param>
         public void RemoveFromBasket(Item itemToRemove, int amount)
         {
             Item item = playerBasket.Find(i => i.Equals(itemToRemove));
@@ -175,12 +196,15 @@ namespace ChallengeWeek8
         #endregion
 
         #region Sell Logic
+        /// <summary>
+        /// Sell an item to the shop, adding money to the player
+        /// </summary>
+        /// <param name="item">Item to sell</param>
+        /// <param name="amount">Amount of <paramref name="item"/> to sell</param>
         public void SellToShop(Item item, int amount)
         {
-            float value = Item.GetResalePrice(item, amount);
-
             Player.Instance.RemoveItem(item, amount);
-            Player.Instance.Money += value;
+            Player.Instance.Money += Item.GetResalePrice(item, amount);
             AddItemToStock(item, amount);
         }
         #endregion

@@ -5,7 +5,9 @@ namespace ChallengeWeek8
 {
     internal static class Utils
     {
+        // All the valid yes' that the user can enter
         public static List<string> ValidYes { get; } = new List<string>() { "y", "yes", "yeah", "yea" };
+        // All the valid no's that the user can enter
         public static List<string> ValidNo { get; } = new List<string>() { "n", "no", "nah" };
 
 
@@ -28,7 +30,7 @@ namespace ChallengeWeek8
                 string selection = Console.ReadLine().ToLower().Trim();
                 if (!int.TryParse(selection, out index))
                 {
-                    index = optionsList.FindIndex(option => selection == option.ToLower()) + 1;
+                    index = optionsList.FindIndex(option => selection == option.ToLower().TrimColor()) + 1;
                 }
                 index -= 1;
                 if (index < 0 || index >= options.Length)
@@ -75,6 +77,7 @@ namespace ChallengeWeek8
                 foreach (StringColor stringColor in stringColors)
                 {
                     Console.ForegroundColor = stringColor.ForegroundColor;
+                    Console.BackgroundColor = stringColor.BackgroundColor;
                     Console.Write(stringColor.Text);
                 }
                 Console.WriteLine();

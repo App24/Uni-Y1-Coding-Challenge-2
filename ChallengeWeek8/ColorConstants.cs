@@ -2,6 +2,9 @@
 
 namespace ChallengeWeek8
 {
+    /// <summary>
+    /// All the colors used in the program, allows for quick editing of certain elements
+    /// </summary>
     internal static class ColorConstants
     {
         public const ConsoleColor ITEM_COLOR = ConsoleColor.Magenta;
